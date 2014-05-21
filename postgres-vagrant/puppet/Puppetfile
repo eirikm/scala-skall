@@ -1,0 +1,13 @@
+# Configuration for librarian-puppet. For example:
+# 
+forge "http://forge.puppetlabs.com"
+
+mod "puppetlabs/stdlib" 
+mod "puppetlabs/postgresql"
+
+mod "locales",
+  :git => "git://github.com/saz/puppet-locales"
+#  :git => "git://github.com/attachmentgenie/puppet-module-locales.git"
+
+mod "apt",
+  :git => "git://github.com/puppetlabs/puppetlabs-apt.git"
