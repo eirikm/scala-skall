@@ -2,13 +2,13 @@ import unfiltered.request._
 import unfiltered.response._
 
 object IndustryRest
-  extends IndustryRepo {
+  extends IndustryRepoComponent {
 
   def main(args: Array[String]) {
     unfiltered.jetty.Http(1337).filter {
       unfiltered.filter.Planify {
         case GET(Path(Seg("industry" :: industryId :: Nil))) =>
-          getById(industryId).map {
+          industryRepo.getById(industryId).map {
             industry =>
               Ok ~> JsonContent ~> ResponseString(toJson(industry))
           }.getOrElse(NotFound)
@@ -16,7 +16,7 @@ object IndustryRest
         case GET(Path(Seg("industry" :: Nil))) =>
           Ok ~> JsonContent ~>
             ResponseString(
-              getAll map(toJson(_)) mkString("[", ", ", "]"))
+              industryRepo.getAll map(toJson(_)) mkString("[", ", ", "]"))
       }
     }.run()
   }
@@ -29,11 +29,14 @@ object IndustryRest
 
 case class Industry(id: String, name: String)
 
-trait IndustryRepo {
-  private val industries = Map(
-    "1" -> Industry("1", "Fjon"),
-    "2" -> Industry("2", "Fjott")
-  )
-  def getAll: Seq[Industry] = industries.values.toSeq
-  def getById(id: String): Option[Industry] = industries.get(id)
+trait IndustryRepoComponent {
+  object industryRepo {
+    private val industries = Map(
+      "1" -> Industry("1", "Fjon"),
+      "2" -> Industry("2", "Fjott")
+    )
+
+    def getAll: Seq[Industry] = industries.values.toSeq
+    def getById(id: String): Option[Industry] = industries.get(id)
+  }
 }
