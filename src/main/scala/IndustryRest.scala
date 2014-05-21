@@ -1,3 +1,4 @@
+import linx.Root
 import unfiltered.filter.Plan
 import unfiltered.filter.Plan.Intent
 import unfiltered.request._
@@ -10,18 +11,23 @@ object IndustryRest {
   }
 }
 
+object urls {
+  val listIndustries = Root / "industry"
+  val getIndustry = Root / "industry" / 'industryId
+}
+
 object IndustryPlan
   extends Plan
   with IndustryRepoComponent {
 
   override def intent: Intent = {
-    case GET(Path(Seg("industry" :: industryId :: Nil))) =>
+    case GET(Path(urls.getIndustry(industryId))) =>
       industryRepo.getById(industryId).map {
         industry =>
           Ok ~> JsonContent ~> ResponseString(toJson(industry))
       }.getOrElse(NotFound)
 
-    case GET(Path(Seg("industry" :: Nil))) =>
+    case GET(Path(urls.listIndustries())) =>
       Ok ~> JsonContent ~>
         ResponseString(
           industryRepo.getAll map(toJson(_)) mkString("[", ", ", "]"))
