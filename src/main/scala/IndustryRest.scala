@@ -1,7 +1,8 @@
 import com.typesafe.scalalogging.slf4j.Logging
 import linx.Root
 import org.apache.log4j.PropertyConfigurator
-import org.apache.log4j.xml.DOMConfigurator
+import org.constretto.Constretto
+import org.constretto.Constretto._
 import org.slf4j.bridge.SLF4JBridgeHandler
 import unfiltered.filter.Plan
 import unfiltered.filter.Plan.Intent
@@ -27,7 +28,12 @@ object urls {
 object IndustryPlan
   extends Plan
   with Logging
-  with IndustryRepoComponent {
+  with IndustryRepoComponent
+  with ConfigurationComponent {
+
+  override lazy val conf = Constretto(Seq(properties("classpath:datasource.properties")))
+
+  println(conf[String]("datasource.url"))
 
   override def intent: Intent = {
     case GET(Path(urls.getIndustry(industryId))) =>

@@ -12,6 +12,13 @@ val unfiltered = Seq(
   "com.jteigen" %% "linx" % "0.1"
 )
 
+lazy val constrettoDeps         = Seq(
+  "org.constretto"              %  "constretto-core"        % "2.0.2",
+  "org.constretto"              %  "constretto-api"         % "2.0.2",
+  "org.constretto"              %% "constretto-scala"       % "1.0",
+  "org.ini4j"                   %  "ini4j"                  % "0.5.2",
+  "com.thoughtworks.paranamer"  %  "paranamer"              % "2.3")
+
 val logging  = Seq(
   "com.typesafe" %% "scalalogging-slf4j" % "1.0.1",
   "org.slf4j" % "slf4j-api" % "1.7.5",
@@ -20,5 +27,5 @@ val logging  = Seq(
   "org.slf4j" % "jcl-over-slf4j" % "1.7.5"
 )
 
-libraryDependencies ++= unfiltered ++ logging
+libraryDependencies ++= unfiltered ++ logging ++ constrettoDeps
 
