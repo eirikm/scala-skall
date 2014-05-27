@@ -45,7 +45,7 @@ object IndustryApp
 
 trait IndustryPlan
   extends Plan
-  with IndustryRepoComponent
+  with IndustryRepoHashMapComponent
   with Logging {
 
   override def intent: Intent = {
@@ -72,7 +72,7 @@ trait IndustryPlan
 
 case class Industry(id: String, name: String)
 
-trait IndustryRepoComponent {
+trait IndustryRepoHashMapComponent {
   object industryRepo extends Logging {
     private val industries = Map(
       "1" -> Industry("1", "Fjon"),
