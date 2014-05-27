@@ -15,8 +15,6 @@ import unfiltered.response.ResponseString
 // - Directives
 // - liquibase
 // - slick
-// - ConcreteServices
-// - Abstract
 
 
 object IndustryRest {
@@ -36,6 +34,7 @@ object urls {
 
 object IndustryApp
   extends IndustryPlan
+  with ConcreteServices
   with ConfigurationComponent {
 
   override lazy val conf = Constretto(Seq(properties("classpath:datasource.properties")))
@@ -43,9 +42,12 @@ object IndustryApp
 
 }
 
+trait ConcreteServices
+  extends IndustryRepoHashMapComponent
+
 trait IndustryPlan
   extends Plan
-  with IndustryRepoHashMapComponent
+  with AbstractIndustryRepoComponent
   with Logging {
 
   override def intent: Intent = {
@@ -72,8 +74,22 @@ trait IndustryPlan
 
 case class Industry(id: String, name: String)
 
-trait IndustryRepoHashMapComponent {
-  object industryRepo extends Logging {
+trait AbstractIndustryRepoComponent {
+  def industryRepo: AbstractIndustryRepo
+
+  trait AbstractIndustryRepo {
+    def getById(id: String): Option[Industry]
+    def getAll: Seq[Industry]
+  }
+}
+
+trait IndustryRepoHashMapComponent
+  extends AbstractIndustryRepoComponent {
+
+  object industryRepo
+    extends AbstractIndustryRepo
+    with Logging {
+
     private val industries = Map(
       "1" -> Industry("1", "Fjon"),
       "2" -> Industry("2", "Fjott")
