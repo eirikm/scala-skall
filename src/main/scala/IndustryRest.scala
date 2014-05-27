@@ -10,6 +10,15 @@ import unfiltered.request._
 import unfiltered.response._
 import unfiltered.response.ResponseString
 
+// TODO
+// - Run
+// - Directives
+// - liquibase
+// - slick
+// - ConcreteServices
+// - Abstract
+
+
 object IndustryRest {
 
   def main(args: Array[String]) {
@@ -50,10 +59,10 @@ object IndustryPlan
           industryRepo.getAll map(toJson(_)) mkString("[", ", ", "]"))
   }
 
-  private def toJson(i: Industry): String = {
+  private def toJson(i: Industry): String =
     s"""{ 'id' = "${i.id}",
        |  'name' = "${i.name}"
-       |}""".stripMargin  }
+       |}""".stripMargin
 }
 
 case class Industry(id: String, name: String)
