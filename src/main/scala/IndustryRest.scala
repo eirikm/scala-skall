@@ -25,7 +25,7 @@ object IndustryRest {
     PropertyConfigurator.configure(getClass.getResource("/log4j.properties"))
     SLF4JBridgeHandler.install()
 
-    unfiltered.jetty.Http(1337).filter(IndustryPlan).run()
+    unfiltered.jetty.Http(1337).filter(IndustryApp).run()
   }
 }
 
@@ -34,15 +34,19 @@ object urls {
   val getIndustry = Root / "industry" / 'industryId
 }
 
-object IndustryPlan
-  extends Plan
-  with Logging
-  with IndustryRepoComponent
+object IndustryApp
+  extends IndustryPlan
   with ConfigurationComponent {
 
   override lazy val conf = Constretto(Seq(properties("classpath:datasource.properties")))
-
   println(conf[String]("datasource.url"))
+
+}
+
+trait IndustryPlan
+  extends Plan
+  with IndustryRepoComponent
+  with Logging {
 
   override def intent: Intent = {
     case GET(Path(urls.getIndustry(industryId))) =>
@@ -63,6 +67,7 @@ object IndustryPlan
     s"""{ 'id' = "${i.id}",
        |  'name' = "${i.name}"
        |}""".stripMargin
+
 }
 
 case class Industry(id: String, name: String)
