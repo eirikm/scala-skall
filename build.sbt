@@ -6,9 +6,12 @@ version := "0.1.0-SNAPSHOT"
 
 scalaVersion := "2.10.4"
 
+val versionUnfiltered = "0.8.0"
+
 val unfiltered = Seq(
-  "net.databinder" %% "unfiltered-filter" % "0.8.0",
-  "net.databinder" %% "unfiltered-jetty" % "0.8.0",
+  "net.databinder" %% "unfiltered-filter" % versionUnfiltered,
+  "net.databinder" %% "unfiltered-jetty" % versionUnfiltered,
+  "net.databinder" %% "unfiltered-directives" % versionUnfiltered,
   "com.jteigen" %% "linx" % "0.1"
 )
 
